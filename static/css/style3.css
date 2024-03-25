@@ -1,0 +1,55 @@
+.main-container {
+    width: 80%;
+    margin: 0 auto; /* Centers the content */
+    padding: 20px;
+}
+
+.post-card {
+    background-color: #f9f9f9; /* Light grey background */
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px;
+    margin-bottom: 20px; /* Space between posts */
+}
+
+.post-title {
+    color: #333; /* Dark grey color */
+    margin-bottom: 10px; /* Space below the title */
+}
+
+.post-meta {
+    font-size: 0.9em;
+    color: #666; /* Medium grey color */
+    margin-bottom: 15px; /* Space below the meta info */
+}
+
+.post-content {
+    margin-bottom: 15px; /* Space below the post content */
+}
+
+.comments-section {
+    margin-top: 20px; /* Space above the comments section */
+}
+
+.comment {
+    padding-left: 20px; /* Indent comments */
+    border-left: 3px solid #ddd; /* Vertical line before comments */
+    margin-bottom: 10px; /* Space between comments */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space below each form group */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary blue */
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Larger button size */
+    border-radius: 5px; /* Rounded button edges */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

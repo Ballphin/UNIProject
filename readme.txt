@@ -1,4 +1,4 @@
-Name: Kanmin (Daniel) Sung
+Name: Kangmin (Daniel) Sung
 UID: 31322966 
 
 How to start the program:

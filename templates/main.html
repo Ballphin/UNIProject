@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="main-container">
-    <h2>What is on your Mind?</h2>
+    <h2>What's on your Mind?</h2>
     <form method="POST" action="{{ url_for('main_page') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
@@ -21,7 +21,7 @@
         {% for post in posts %}
         <div class="post-card">
             <h3 class="post-title">{{ post.title }}</h3>
-            <div class="post-meta">Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d') }}</div>
+            <div class="post-meta">Posted by {{ post.author.username }} on {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</div>
             <p class="post-content">{{ post.content }}</p>
             <!-- Like and Comment Buttons -->
             <form action="{{ url_for('like_post', post_id=post.id) }}" method="post">
@@ -36,7 +36,7 @@
             <div class="comments-section">
                 {% for comment in post.comments %}
                     <div class="comment">
-                        <p><strong>{{ comment.user.username }}</strong> commented on {{ comment.date_posted.strftime('%Y-%m-%d') }}:</p>
+                        <p><strong>{{ comment.user.username }}</strong> commented on {{ comment.date_posted.strftime('%Y-%m-%d %H:%M:%S')}}:</p>
                         <p>{{ comment.content }}</p>
                     </div>
                 {% endfor %}

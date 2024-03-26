@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <h2>Profile</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.nickname.label }}
+            {{ form.nickname(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+    <hr>
+    <h4>Email: {{ user.email }}</h4>
+    <h4>Posts:</h4>
+    <ul>
+        {% for post in user.posts %}
+        <li><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

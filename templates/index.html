@@ -12,12 +12,13 @@
         <h1>Welcome to UNI</h1>
         <div class="auth-forms">
             <!-- Log In Form -->
-            <form action="{{ url_for('login') }}" method="post" class="auth-form">
+            <form action="{{ url_for('login') }}" method="get" class="auth-form">
                 <button type="submit">Log In</button>
             </form>
+            
             <p></p>
             <!-- Sign Up Form -->
-            <form action="{{ url_for('register') }}" method="post" class="auth-form">
+            <form action="{{ url_for('register') }}" method="get" class="auth-form">
                 <!-- <input type="text" name="username" placeholder="Username">
                 <input type="email" name="email" placeholder="Email">
                 <input type="password" name="password" placeholder="Password"> -->

@@ -6,6 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import RegistrationForm, LoginForm, PostForm
 from models import db, User, Post, Like, Comment  # Ensure Like model is imported
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 
 
 app = Flask(__name__)
@@ -50,6 +53,8 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('main_page'))
     form = RegistrationForm()
+
+
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data)
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
@@ -57,12 +62,14 @@ def register():
         db.session.commit()
         flash('Your account has been created! You can now log in.', 'success')
         return redirect(url_for('login'))
+    
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main_page'))
+    
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -70,6 +77,7 @@ def login():
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main_page'))
+        
         else:
             flash('Login Unsuccessful. Please check email and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -109,6 +117,14 @@ def like_post(post_id):
     db.session.commit()
     return redirect(url_for('main_page'))
 
+#Main Post Route
+@app.route('/post/<int:post_id>')
+@login_required
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post_detail.html', post=post)
+
+
 #Comment Post
 @app.route('/post/<int:post_id>/comment', methods=['POST'])
 @login_required
@@ -123,6 +139,29 @@ def comment_post(post_id):
     else:
         flash('There was an error with your comment.', 'danger')
     return redirect(url_for('main_page'))
+
+#Profile Page, Updating NickName
+#Display the profile page where users can see their nickname, email, and posts. 
+#Additionally, we'll implement a form for changing the nickname.
+class ProfileForm(FlaskForm):
+    nickname = StringField('Nickname', validators=[DataRequired()])
+    submit = SubmitField('Update Nickname')
+
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm()
+    user = User.query.get_or_404(current_user.id)
+    if form.validate_on_submit():
+        user.username = form.nickname.data
+        db.session.commit()
+        flash('Your profile has been updated!', 'success')
+        return redirect(url_for('profile'))
+    elif request.method == 'GET':
+        form.nickname.data = current_user.username
+    return render_template('profile.html', title='Profile', form=form, user=user)
+
+##########################################################################################
 
 if __name__ == '__main__':
     app.run(debug=True)

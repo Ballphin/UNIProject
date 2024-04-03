@@ -18,17 +18,31 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    
-                    {% if current_user.is_authenticated %} 
-
+                    <!-- Dropdown Menu -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+    
+                    <!-- Profile Link -->
+                    {% if current_user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
                     </li>
-
+    
+                    <!-- Logout Link -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                     </li>
-                    
+    
+                    <!-- Conditional Rendering for Login/Register -->
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('login') }}">Login</a>
@@ -41,6 +55,7 @@
             </div>
         </div>
     </nav>
+    
     <div class="container mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

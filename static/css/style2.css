@@ -30,6 +30,16 @@
     padding: 20px;
 } */
 
+.wide-dropdown-menu {
+    min-width: 100%; /* Make dropdown full width */
+    padding: 15px; /* Add some padding inside the dropdown */
+}
+
+.dropdown-column {
+    padding: 0 15px; /* Add padding inside each column */
+}
+
+
 /* Adjustments for center-container if it's within main-container */
 .center-container {
     width: 100%; /* Take full width of the parent */

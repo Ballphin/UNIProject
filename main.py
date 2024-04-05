@@ -9,6 +9,7 @@ from models import db, User, Post, Like, Comment  # Ensure Like model is importe
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
@@ -17,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()
@@ -160,6 +162,26 @@ def profile():
     elif request.method == 'GET':
         form.nickname.data = current_user.username
     return render_template('profile.html', title='Profile', form=form, user=user)
+
+#Different Forums 
+@app.route('/forum/<major>', methods=['GET', 'POST'])
+@login_required
+def forum(major):
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        # You might want to add an additional field to the Post model for major
+        new_post.major = major
+        db.session.add(new_post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('forum', major=major))
+    # You would filter posts by major here
+    posts = Post.query.filter_by(major=major).order_by(Post.date_posted.desc()).all()
+    return render_template('forum.html', major=major, posts=posts, form=form)
+
+
+
 
 ##########################################################################################
 

@@ -23,6 +23,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comment', back_populates='post', lazy='dynamic', cascade="all, delete-orphan")
     likes = db.relationship('Like', backref='post', lazy='dynamic', cascade="all, delete-orphan")
+    major = db.Column(db.String(100), nullable=True)  # Major field added
 
     def __repr__(self):
         return f'<Post "{self.title}">'

@@ -108,7 +108,8 @@ def delete_post(post_id):
 #Like Post Route
 @app.route("/like_post/<int:post_id>", methods=['POST'])
 @login_required
-def like_post(post_id, major=None):
+def like_post(post_id):
+    major = request.args.get('major', None)
     post = Post.query.get_or_404(post_id)
     like = Like.query.filter_by(user_id=current_user.id, post_id=post.id).first()
 
@@ -143,6 +144,7 @@ def post(post_id):
 @app.route('/post/<int:post_id>/comment', methods=['POST'])
 @login_required
 def comment_post(post_id):
+    major = request.args.get('major', None)
     post = Post.query.get_or_404(post_id)
     content = request.form.get('content')
     if content:
@@ -150,21 +152,33 @@ def comment_post(post_id):
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added!', 'success')
+
     else:
         flash('There was an error with your comment.', 'danger')
-    return redirect(url_for('main_page'))
+
+    #Redirecting to Correct Major Post
+    if major:
+        return redirect(url_for('forum', major=major))
+    else:
+        return redirect(url_for('main_page'))
 
 # Deleting Comment
 @app.route("/comment/<int:comment_id>/delete", methods=['POST'])
 @login_required
 def delete_comment(comment_id):
+    major = request.args.get('major', None)
     comment = Comment.query.get_or_404(comment_id)
     if comment.user_id != current_user.id:
         abort(403)  # Forbidden access if the current user isn't the comment's author
     db.session.delete(comment)
     db.session.commit()
     flash('Your comment has been deleted!', 'success')
-    return redirect(url_for('main_page'))  # or wherever you want to redirect users after deletion
+    
+    if major:
+        return redirect(url_for('forum', major=major))
+    else:
+        return redirect(url_for('main_page'))
+
 
 #Profile Page, Updating NickName
 #Display the profile page where users can see their nickname, email, and posts. 

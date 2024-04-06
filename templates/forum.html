@@ -3,7 +3,8 @@
 {% block content %}
 <div class="main-container">
     <h2>{{ major }} Forum</h2>
-    <form method="POST" action="{{ url_for('main_page') }}">
+    <!-- Correct the form action to submit to the 'forum' route with the current major -->
+    <form method="POST" action="{{ url_for('forum', major=major) }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.title.label(class="form-label") }}
@@ -15,6 +16,7 @@
         </div>
         {{ form.submit(class="btn btn-primary") }}
     </form>
+
 
     <!-- Posts feed -->
     <div class="feed">

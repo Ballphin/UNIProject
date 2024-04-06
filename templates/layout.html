@@ -19,7 +19,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <!-- Schedule Drop Down Menu-->
-                    <!-- ... -->
                     <!-- Dropdown Menu for Major Forums -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMajors" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -27,24 +26,23 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMajors">
                             <a class="dropdown-item" href="{{ url_for('forum', major='Engineering') }}">Engineering</a>
+                            <div class="dropdown-divider"></div>
                             <!-- Add similar links for each major -->
                             <a class="dropdown-item" href="{{ url_for('forum', major='Computer Science') }}">Computer Science</a>
                             <a class="dropdown-item" href="{{ url_for('forum', major='Mechanical Engineering') }}">Mechanical Engineering</a>
                             <a class="dropdown-item" href="{{ url_for('forum', major='Chemical Engineering') }}">Chemical Engineering</a>
                             <a class="dropdown-item" href="{{ url_for('forum', major='Biomedical Engineering') }}">Biomedical Engineering</a>
-                            <!-- ... -->
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ url_for('forum', major='Social Science') }}">Social Science</a>
-                            <!-- ... -->
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ url_for('forum', major='Economics') }}">Economics</a>
                             <a class="dropdown-item" href="{{ url_for('forum', major='History') }}">History</a>
                             <a class="dropdown-item" href="{{ url_for('forum', major='Political Science') }}">Political Science</a>
                         </div>
                     </li>
-                    <!-- ... -->
 
 
-                    <!-- Dropdown Menu -->
-                    <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Major Forums
                         </a>
@@ -63,7 +61,7 @@
                             <a class="dropdown-item" href="#">History</a>
                             <a class="dropdown-item" href="#">Political Science</a>
                         </div>
-                    </li>
+                    </li> -->
     
                     <!-- Profile Link -->
                     {% if current_user.is_authenticated %}

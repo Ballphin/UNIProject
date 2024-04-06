@@ -37,6 +37,7 @@ def home():
         return redirect(url_for('main_page'))
     return render_template('index.html')
 
+#Main Page
 @app.route('/main', methods=['GET', 'POST'])
 @login_required
 def main_page():
@@ -50,6 +51,7 @@ def main_page():
     posts = Post.query.order_by(Post.date_posted.desc()).all()
     return render_template('main.html', posts=posts, form=form)
 
+#Register and Login
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -67,6 +69,7 @@ def register():
     
     return render_template('register.html', title='Register', form=form)
 
+#Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -84,11 +87,13 @@ def login():
             flash('Login Unsuccessful. Please check email and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
 
+#Logout
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
 
+#Post Route
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
 def delete_post(post_id):
@@ -100,9 +105,10 @@ def delete_post(post_id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main_page'))
 
+#Like Post Route
 @app.route("/like_post/<int:post_id>", methods=['POST'])
 @login_required
-def like_post(post_id):
+def like_post(post_id, major=None):
     post = Post.query.get_or_404(post_id)
     like = Like.query.filter_by(user_id=current_user.id, post_id=post.id).first()
 
@@ -117,7 +123,13 @@ def like_post(post_id):
         flash('Post liked!', 'success')
 
     db.session.commit()
-    return redirect(url_for('main_page'))
+
+    # Redirect to the specific forum page if major is known, otherwise to the main forum
+    if major:
+        return redirect(url_for('forum', major=major))
+    else:
+        return redirect(url_for('main_page'))
+
 
 #Main Post Route
 @app.route('/post/<int:post_id>')
@@ -142,6 +154,18 @@ def comment_post(post_id):
         flash('There was an error with your comment.', 'danger')
     return redirect(url_for('main_page'))
 
+# Deleting Comment
+@app.route("/comment/<int:comment_id>/delete", methods=['POST'])
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    if comment.user_id != current_user.id:
+        abort(403)  # Forbidden access if the current user isn't the comment's author
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Your comment has been deleted!', 'success')
+    return redirect(url_for('main_page'))  # or wherever you want to redirect users after deletion
+
 #Profile Page, Updating NickName
 #Display the profile page where users can see their nickname, email, and posts. 
 #Additionally, we'll implement a form for changing the nickname.
@@ -149,6 +173,7 @@ class ProfileForm(FlaskForm):
     nickname = StringField('Nickname', validators=[DataRequired()])
     submit = SubmitField('Update Nickname')
 
+#Profile Route
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
